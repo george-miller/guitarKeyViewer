@@ -18,7 +18,7 @@ function findCurrentScaleNote($startingValue, $notesInScale) {
     }
 }
 
-$rows = queryIntegerGetVariable('rows', 18);
+$rows = queryIntegerGetVariable('rows', 25);
 $columns = queryIntegerGetVariable('columns', 6);
 
 // Values of the chromatic scale start at 1
@@ -30,6 +30,7 @@ for ($i = 0; $i < $columns; $i++) {
 $keyType = array_key_exists('keyType', $_GET) ? $_GET['keyType'] : 'major';
 $chromaticScaleLength = 12;
 $notesInScale = null;
+$keyTypes = array('major', 'minor');
 switch ($keyType){
 // If a note in the chromatic scale was one unit, 
 // these lengths would describe how to achive the
@@ -88,10 +89,15 @@ for ($col = 0; $col < $columns; $col++) {
     width:30px;
     padding-top: 10px;
 }
+.verticalCont {
+    margin: 10px;
+    float: left;
+}
 </style>
 </head>
 <body>
 
+<div class="verticalCont">
 <?php for ($col = 0; $col < $columns; $col++) : ?>
 
 <div class='col'>
@@ -107,6 +113,21 @@ for ($col = 0; $col < $columns; $col++) {
 </div>
 
 <?php endfor; ?>
+</div>
+<div class="verticalCont" style="width:60%;">
+<h1>Gutiar Key Viewer</h1>
+<p>This page is degisned for guitarists to see all the availible notes in a key to help visualize the whole neck of the guitar.</p>
+<form>
+<label>Select the type of scale 
+    <select name="keyType">
+        <?php foreach($keyTypes as $type): ?>
+        <option <?php if ($type == $keyType) { print('selected="selected"'); }  ?> ><?php print($type)?></option>
+        <?php endforeach; ?>
+    </select>
+</label>
+<input type='submit'>
+</form>
+</div>
 
 </body>
 </html>
