@@ -3,7 +3,7 @@
 $error = '';
 
 function queryIntegerGetVariable($key, $defaultValue){
-    if (array_key_exists($key, $_GET)){
+    if (array_key_exists($key, $_GET) && is_numeric($_GET[$key])){
         return intval($_GET[$key]);
     } else {
         return $defaultValue;
@@ -18,13 +18,13 @@ function findCurrentScaleNote($startingValue, $notesInScale) {
     }
 }
 
-$rows = queryIntegerGetVariable('rows', 25);
+$rows = queryIntegerGetVariable('rows', 14);
 $columns = queryIntegerGetVariable('columns', 6);
 
 // Values of the chromatic scale start at 1
 $startingValues = array(8, 1, 6, 11, 3, 8);
 for ($i = 0; $i < $columns; $i++) {
-    array_push($startingValues, queryIntegerGetVariable('startingValue' . (string) $i, $startingValues[$i]));
+    $startingValues[$i] = queryIntegerGetVariable('startingValue' . (string) $i, $startingValues[$i]);
 }
 
 $keyType = array_key_exists('keyType', $_GET) ? $_GET['keyType'] : 'major';
@@ -85,13 +85,16 @@ for ($col = 0; $col < $columns; $col++) {
     text-align: center;
     font-weight: bold;
     border:solid 1px;
-    height:30px;
-    width:30px;
-    padding-top: 10px;
+    height:40px;
+    width:40px;
+    line-height: 40px;
 }
 .verticalCont {
     margin: 10px;
     float: left;
+}
+.inScale {
+    background-color: #DDD;
 }
 </style>
 </head>
@@ -104,7 +107,7 @@ for ($col = 0; $col < $columns; $col++) {
 
     <?php for ($row = 0; $row < $rows; $row++) : ?>
 
-    <div class='row'>
+    <div class='row<?php if ($fretMatrix[$col][$row] != 0) {print( ' inScale');} ?>'>
         <?php if ($fretMatrix[$col][$row] != 0) {print($fretMatrix[$col][$row]);} ?>
     </div>
 
@@ -125,6 +128,14 @@ for ($col = 0; $col < $columns; $col++) {
         <?php endforeach; ?>
     </select>
 </label>
+<p>Indicate the starting value (as a number indicating the note of the chromatic scale, from 1 to 12) for each column</p>
+<?php for($i = 0; $i < $columns; $i++): ?>
+<label> 
+    Column <?php print($i+1); ?>
+    <input type="text" name="startingValue<?php print($i); ?>">
+</label>
+<br/>
+<?php endfor; ?>
 <input type='submit'>
 </form>
 </div>
