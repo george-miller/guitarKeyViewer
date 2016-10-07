@@ -42,7 +42,7 @@ switch ($keyType){
     case 'minor':
         $notesInScale = [1, 3, 4, 6, 8, 9, 11];
         break;
-}    
+}
 
 $fretMatrix = array();
 for ($i = 0; $i < $columns; $i++) {
@@ -119,9 +119,14 @@ for ($col = 0; $col < $columns; $col++) {
 </div>
 <div class="verticalCont" style="width:60%;">
 <h1>Gutiar Key Viewer</h1>
-<p>This page is degisned for guitarists to see all the availible notes in a key to help visualize the whole neck of the guitar.</p>
+          <p>This page is degisned for guitarists to see all the availible notes in a key to help visualize the whole neck of the guitar.  The grid is the fretboard, and with notes increasing in pitch as we go down the grid.  Scale notes in the grid are shown from 1 to 7, representing the seven notes in every regular scale.  The spaces between said notes are determined by the key type (i.e. major or minor).
+          </p>
+          <p>For example, if we consider the chromatic scale as notes going from 1 to 12, the major scale has notes 1, 3, 5, 6, 8, 10, 12, and back to 13 (which is the same as 1, just an octave higher).  The algorithm for creating the grid uses a list of numbers like that to identify all notes in the key type all the way up the neck, starting at the values given (defaulted to standard guitar tuning).
+          </p>
+          <p>
+          You can input your own scale (coming soon), change the starting values of each column to work with different guitar string tunings, and change the amount of rows and columns to see more frets, or more strings.  Hopefully this helps you to become a better guitar player!</p>
 <form>
-<label>Select the type of scale 
+<label>Select the type of scale
     <select name="keyType">
         <?php foreach($keyTypes as $type): ?>
         <option <?php if ($type == $keyType) { print('selected="selected"'); }  ?> ><?php print($type)?></option>
@@ -130,12 +135,20 @@ for ($col = 0; $col < $columns; $col++) {
 </label>
 <p>Indicate the starting value (as a number indicating the note of the chromatic scale, from 1 to 12) for each column</p>
 <?php for($i = 0; $i < $columns; $i++): ?>
-<label> 
+<label>
     Column <?php print($i+1); ?>
-    <input type="text" name="startingValue<?php print($i); ?>">
+    <input type="text" name="startingValue<?php print($i); ?>" placeholder="<?php print($startingValues[$i])?>">
 </label>
 <br/>
 <?php endfor; ?>
+<label>
+          Specify the number of columns: <input type="text" name="columns" placeholder="<?php print($columns)?>">
+</label>
+          <br/>
+<label>
+          Specify the number of rows: <input type="text" name="rows" placeholder="<?php print($rows)?>">
+</label>
+          <br/>
 <input type='submit'>
 </form>
 </div>
