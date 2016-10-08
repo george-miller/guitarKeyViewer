@@ -29,19 +29,25 @@ for ($i = 0; $i < $columns; $i++) {
 
 $keyType = array_key_exists('keyType', $_GET) ? $_GET['keyType'] : 'major';
 $chromaticScaleLength = 12;
-$notesInScale = null;
-$keyTypes = array('major', 'minor');
+$notesInScale = array();
+$keyTypes = array('major', 'minor', 'manual');
 switch ($keyType){
-// If a note in the chromatic scale was one unit, 
-// these lengths would describe how to achive the
-// major scale from distances between notesInScale. 
-// Whole Whole Half Whole Whole Whole Half
-    case 'major':
-        $notesInScale = [1, 3, 5, 6, 8, 10, 12];
-        break;
-    case 'minor':
-        $notesInScale = [1, 3, 4, 6, 8, 9, 11];
-        break;
+  // If a note in the chromatic scale was one unit, 
+  // these lengths would describe how to achive the
+  // major scale from distances between notesInScale. 
+  // Whole Whole Half Whole Whole Whole Half
+ case 'major':
+   $notesInScale = [1, 3, 5, 6, 8, 10, 12];
+   break;
+ case 'minor':
+   $notesInScale = [1, 3, 4, 6, 8, 9, 11];
+   break;
+ case 'manual':
+   for ($i = 0; $i < 7; $i++) {
+     array_push($notesInScale, queryIntegerGetVariable('noteInScale' . (string) $i, 1));
+   }
+   break;
+
 }
 
 $fretMatrix = array();
@@ -78,24 +84,24 @@ for ($col = 0; $col < $columns; $col++) {
 <head>
 <style>
 .col {
-    float: left;
-}
+  float: left;
+ }
 .row {
-    font-family: 'courier';
-    text-align: center;
-    font-weight: bold;
-    border:solid 1px;
-    height:40px;
-    width:40px;
-    line-height: 40px;
-}
+  font-family: 'courier';
+  text-align: center;
+  font-weight: bold;
+ border:solid 1px;
+ height:40px;
+ width:40px;
+  line-height: 40px;
+ }
 .verticalCont {
-    margin: 10px;
-    float: left;
-}
+ margin: 10px;
+  float: left;
+ }
 .inScale {
-    background-color: #DDD;
-}
+  background-color: #DDD;
+ }
 </style>
 </head>
 <body>
@@ -124,7 +130,7 @@ for ($col = 0; $col < $columns; $col++) {
           <p>For example, if we consider the chromatic scale as notes going from 1 to 12, the major scale has notes 1, 3, 5, 6, 8, 10, 12, and back to 13 (which is the same as 1, just an octave higher).  The algorithm for creating the grid uses a list of numbers like that to identify all notes in the key type all the way up the neck, starting at the values given (defaulted to standard guitar tuning).
           </p>
           <p>
-          You can input your own scale (coming soon), change the starting values of each column to work with different guitar string tunings, and change the amount of rows and columns to see more frets, or more strings.  Hopefully this helps you to become a better guitar player!</p>
+          You can input your own scale, change the starting values of each column to work with different guitar string tunings, and change the amount of rows and columns to see more frets, or more strings.  Hopefully this helps you to become a better guitar player!</p>
 <form>
 <label>Select the type of scale
     <select name="keyType">
@@ -133,6 +139,14 @@ for ($col = 0; $col < $columns; $col++) {
         <?php endforeach; ?>
     </select>
 </label>
+<br/>
+<p>Or select the notes in the scale yourself</p>
+  <?php for($i = 0; $i < sizeof($notesInScale); $i++): ?>
+  <label> Note <?php print($i+1);?> 
+    <input type="text" name="noteInScale<?php print($i);?>" placeholder="<?php print($notesInScale[$i]); ?>" />
+  </label>
+  <br/>
+  <?php endfor; ?>
 <p>Indicate the starting value (as a number indicating the note of the chromatic scale, from 1 to 12) for each column</p>
 <?php for($i = 0; $i < $columns; $i++): ?>
 <label>
