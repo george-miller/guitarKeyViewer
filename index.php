@@ -83,10 +83,11 @@ for ($col = 0; $col < $columns; $col++) {
 <html>
 <head>
 <style>
+.row {
+ display: block;
+ }
 .col {
   float: left;
- }
-.row {
   font-family: 'courier';
   text-align: center;
   font-weight: bold;
@@ -102,22 +103,26 @@ for ($col = 0; $col < $columns; $col++) {
 .inScale {
   background-color: #DDD;
  }
+body {
+ height:100%;
+}
 </style>
 </head>
 <body>
 
 <div class="verticalCont">
-<?php for ($col = 0; $col < $columns; $col++) : ?>
 
-<div class='col'>
+<?php for ($row = 0; $row < $rows; $row++) : ?>
 
-    <?php for ($row = 0; $row < $rows; $row++) : ?>
+<div class='row'>
+    <?php for ($col = 0; $col < $columns; $col++) : ?>
 
-    <div class='row<?php if ($fretMatrix[$col][$row] != 0) {print( ' inScale');} ?>'>
+    <div class='col<?php if ($fretMatrix[$col][$row] != 0) {print( ' inScale');} ?>'>
         <?php if ($fretMatrix[$col][$row] != 0) {print($fretMatrix[$col][$row]);} ?>
     </div>
 
     <?php endfor; ?>
+
 
 </div>
 
@@ -131,7 +136,14 @@ for ($col = 0; $col < $columns; $col++) {
           </p>
           <p>
           You can input your own scale, change the starting values of each column to work with different guitar string tunings, and change the amount of rows and columns to see more frets, or more strings.  Hopefully this helps you to become a better guitar player!</p>
+<h2>Configuration Options</h2>
 <form>
+<label style='margin-right:10px'>Notes should be displayed as
+   <select name="numbersOrNotes">
+    <option selected='selected'>numbers</option>
+    <option>notes</option>
+   </select>
+</label>
 <label>Select the type of scale
     <select name="keyType">
         <?php foreach($keyTypes as $type): ?>
@@ -142,9 +154,9 @@ for ($col = 0; $col < $columns; $col++) {
 <br/>
 <p>Or select the notes in the scale yourself</p>
   <?php for($i = 0; $i < sizeof($notesInScale); $i++): ?>
-  <label> Note <?php print($i+1);?> 
-    <input type="text" name="noteInScale<?php print($i);?>" placeholder="<?php print($notesInScale[$i]); ?>" />
-  </label>
+<label> Note <?php print($i+1);?> 
+<input type="text" name="noteInScale<?php print($i);?>" placeholder="<?php print($notesInScale[$i]); ?>" />
+</label>
   <br/>
   <?php endfor; ?>
 <p>Indicate the starting value (as a number indicating the note of the chromatic scale, from 1 to 12) for each column</p>
