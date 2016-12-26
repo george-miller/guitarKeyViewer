@@ -33,3 +33,4 @@ template title body = toResponse $
       H.title (toHtml title)
     H.body $ do
       body
+

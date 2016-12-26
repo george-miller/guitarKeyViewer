@@ -20,6 +20,7 @@ function findCurrentScaleNote($startingValue, $notesInScale) {
 
 $rows = queryIntegerGetVariable('rows', 14);
 $columns = queryIntegerGetVariable('columns', 6);
+$noteLetters = array('A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#');
 
 // Values of the chromatic scale start at 1
 $startingValues = array(8, 1, 6, 11, 3, 8);
@@ -134,9 +135,12 @@ body {
           </p>
           <p>For example, if we consider the chromatic scale as notes going from 1 to 12, the major scale has notes 1, 3, 5, 6, 8, 10, 12, and back to 13 (which is the same as 1, just an octave higher).  The algorithm for creating the grid uses a list of numbers like that to identify all notes in the key type all the way up the neck, starting at the values given (defaulted to standard guitar tuning).
           </p>
-          <p>
+         <p>
           You can input your own scale, change the starting values of each column to work with different guitar string tunings, and change the amount of rows and columns to see more frets, or more strings.  Hopefully this helps you to become a better guitar player!</p>
+
+
 <h2>Configuration Options</h2>
+
 <form>
 <label style='margin-right:10px'>Notes should be displayed as
    <select name="numbersOrNotes">
@@ -154,7 +158,7 @@ body {
 <br/>
 <p>Or select the notes in the scale yourself</p>
   <?php for($i = 0; $i < sizeof($notesInScale); $i++): ?>
-<label> Note <?php print($i+1);?> 
+<label> Note <?php print($i+1);?>
 <input type="text" name="noteInScale<?php print($i);?>" placeholder="<?php print($notesInScale[$i]); ?>" />
 </label>
   <br/>
