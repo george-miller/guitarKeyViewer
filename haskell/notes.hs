@@ -1,7 +1,12 @@
-
 module Notes where
 
-data Note = A | As | B | C | Cs | D | Ds | E | F | Fs | G | Gs deriving ( Read, Eq, Enum, Show, Ord, Bounded )
+data Note = A | As | B | C | Cs | D | Ds | E | F | Fs | G | Gs deriving ( Read, Eq, Enum, Show )
+
+data Scale = Major | Minor | Dominant deriving (Read, Show)
+
+apply :: (a -> a) -> a -> Int -> a
+apply _ a 0 = a
+apply f a n = apply f (f a) (n - 1)
 
 next :: Note -> Note
 next Gs = A
@@ -13,12 +18,12 @@ prev n = pred n
 
 whole :: Note -> Note
 whole = next . next
+half :: Note -> Note
 half = next
 
-majorScale :: Note -> [Note]
-majorScale n = scanl ($ n) n [whole, whole, half, whole, whole, whole, half]
-
--- Like map and fold put together, it maps over a list of functions
-mapfold :: [a -> a] -> a -> [a]
-mapfold ( f:fs ) n = f n : mapfold fs (f n)
-mapfold [] n = []
+generateScale :: Scale -> Note -> [Note]
+generatorHelper :: [Int] -> Note -> [Note]
+generatorHelper i n = map (apply half (prev n)) i
+generateScale Major = generatorHelper [1, 3, 5, 6, 8, 10, 12, 1]
+generateScale Minor = generatorHelper [1, 3, 4, 6, 8, 9, 11, 1]
+generateScale Dominant = generatorHelper [1, 3, 5, 6, 8, 10, 11, 1]
