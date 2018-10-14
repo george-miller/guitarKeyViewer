@@ -142,12 +142,6 @@ body {
 <h2>Configuration Options</h2>
 
 <form>
-<label style='margin-right:10px'>Notes should be displayed as
-   <select name="numbersOrNotes">
-    <option selected='selected'>numbers</option>
-    <option>notes</option>
-   </select>
-</label>
 <label>Select the type of scale
     <select name="keyType">
         <?php foreach($keyTypes as $type): ?>
